@@ -1,6 +1,14 @@
+import { Box, Button, Flex, Spacer } from '@chakra-ui/react'
+
 function Profile() {
   return (
-    <h2>Profile</h2>
+    <Box>
+      <Flex>
+        <Box>
+
+        </Box>
+      </Flex>
+    </Box>
   )
 }
 

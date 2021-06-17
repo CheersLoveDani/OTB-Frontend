@@ -1,6 +1,18 @@
+import {
+  Box,
+  Flex
+} from '@chakra-ui/react'
+import Login from '../auth/Login'
+import Register from '../auth/Register'
+
 function Home() {
   return (
-    <h1>Home!</h1>
+    <Box p={10}>
+      <Flex>
+        <Register />
+        <Login />
+      </Flex>
+    </Box>
   )
 }
 
