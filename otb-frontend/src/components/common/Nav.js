@@ -16,15 +16,15 @@ function Nav() {
   }
 
   return (
-    <Box w='100%' p={2} color='white' bg='#43484c'>
+    <Box w='100%' p={2}>
       <Flex>
-        <Link to='/'><Button colorScheme='dark'>Home</Button></Link>
+        <Link to='/'><Button>Home</Button></Link>
         <Spacer />
-        <Link to='/teams'><Button colorScheme='dark'>Teams</Button></Link>
+        <Link to='/teams'><Button mr={1}>Teams</Button></Link>
         {
           isLoggedIn ?
             <>
-              <Link to={`/profile/${getCurrentUserId()}`} ><Button colorScheme='dark'>Profile</Button></Link>
+              <Link to={`/profile/${getCurrentUserId()}`} ><Button mr={1}>Profile</Button></Link>
               <Button onClick={handleLogout} colorScheme='red'>Logout</Button>
             </>
             :

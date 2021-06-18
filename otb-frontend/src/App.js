@@ -7,6 +7,7 @@ import TeamDetail from './components/Teams/TeamDetail'
 import Teams from './components/Teams/Teams'
 import Profile from './components/auth/Profile'
 import Nav from './components/common/Nav'
+import theme from './theme'
 
 function App() {
   React.useEffect(() => {
@@ -19,7 +20,7 @@ function App() {
   })
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <BrowserRouter>
         <Nav />
         <Switch>
@@ -30,7 +31,6 @@ function App() {
         </Switch>
       </BrowserRouter>
     </ChakraProvider >
-
   )
 }
 

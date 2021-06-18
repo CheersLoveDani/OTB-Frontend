@@ -16,17 +16,22 @@ import {
   Heading
 } from '@chakra-ui/react'
 
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
+
 
 
 
 function Login() {
   const history = useHistory()
   const [showPass, setShowPass] = React.useState(false)
-  const handlePassShowClick = () => setShowPass(!showPass)
+  const [isError, setIsError] = React.useState(false)
+
   const { formData, handleChange } = useForm({
     email: '',
     password: '',
   })
+
+  const handlePassShowClick = () => setShowPass(!showPass)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -35,15 +40,16 @@ function Login() {
       setToken(data.token)
       history.push('/teams')
       location.reload()
-      console.log(data.token)
+      console.log('success')
     } catch (err) {
-      console.log(err)
+      setIsError(true)
+      console.log('failure')
     }
   }
   return (
     <Box p={2} flex='1'>
       <form onSubmit={handleSubmit}>
-        <FormControl pb={2} id='email' isRequired>
+        <FormControl pb={2} id='email' colorScheme='blackAlpha'>
           <Heading pb={5}>Login</Heading>
           <FormLabel>Email Address</FormLabel>
           <Input
@@ -56,7 +62,7 @@ function Login() {
           <FormHelperText>Enter a valid email address</FormHelperText>
         </FormControl>
 
-        <FormControl pb={5} id='password' isRequired>
+        <FormControl pb={5} id='password'>
           <FormLabel>Password</FormLabel>
           <InputGroup>
             <Input
@@ -66,14 +72,19 @@ function Login() {
               value={formData.password}
               name='password'
             />
-            <InputRightElement width="4.5rem">
+            <InputRightElement width="2.8rem">
               <Button size="sm" onClick={handlePassShowClick}>
-                {showPass ? 'Hide' : 'Show'}
+                {showPass ? <ViewIcon /> : <ViewOffIcon />}
               </Button>
             </InputRightElement>
           </InputGroup>
+          {
+            isError ?
+              <FormHelperText color='red'> Incorrect Email or Password!</FormHelperText>
+              :
+              <FormHelperText> Enter your Password</FormHelperText>
+          }
 
-          <FormHelperText> Enter your Password</FormHelperText>
         </FormControl>
 
         <Button type='submit'>
