@@ -5,10 +5,12 @@ import {
 import Login from '../auth/Login'
 import Register from '../auth/Register'
 
+
 function Home() {
+
   return (
-    <Box p={10}>
-      <Flex>
+    <Box m={{ base: 4, md: 10 }}>
+      <Flex direction={{ base: 'column-reverse', md: 'row' }}>
         <Register />
         <Login />
       </Flex>

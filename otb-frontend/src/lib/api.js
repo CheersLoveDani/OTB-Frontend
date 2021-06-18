@@ -16,3 +16,7 @@ export function loginUser(formData) {
 export function registerUser(formdata) {
   return axios.post(`${URL}/auth/register/`, formdata)
 }
+
+export function getSingleUser(profileId) {
+  return axios.get(`${URL}/auth/profile/${profileId}`)
+}

@@ -16,7 +16,7 @@ function Nav() {
   }
 
   return (
-    <Box w='100%' p={2}>
+    <Box w='100%' p={2} borderBottom='2px' borderColor='black'>
       <Flex>
         <Link to='/'><Button>Home</Button></Link>
         <Spacer />
