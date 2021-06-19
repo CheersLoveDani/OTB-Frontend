@@ -1,3 +1,5 @@
+import { useHistory } from 'react-router-dom'
+
 import {
   Box,
   Flex,
@@ -5,22 +7,30 @@ import {
 } from '@chakra-ui/react'
 
 
-
-
-function TeamListing({ team }) {
+function TeamListing({ name, dps1, dps2, tank1, tank2, support1, support2, teamid }) {
+  const history = useHistory()
   return (
-    <Box m={1}>
-      <Box border='2px' height='4em' borderColor='gray.600' rounded='5px'>
-        <Text m={1}>
-          {team.name}
+    <Box m={1} onClick={() => history.push(`/teams/${teamid}`)}>
+      <Box
+        bgColor='blue.800'
+        border='1px'
+        height='5em'
+        borderColor='gray.700'
+        rounded='5px'
+        _hover={{
+          borderColor: 'gray.400',
+        }}
+      >
+        <Text m={2} fontSize='large'>
+          {name}
         </Text>
         <Flex direction='row' m={1} >
-          <Text flex={1} fontSize='sm'>{team.dps1}</Text>
-          <Text flex={1} fontSize='sm'>{team.dps2}</Text>
-          <Text flex={1} fontSize='sm'>{team.tank1}</Text>
-          <Text flex={1} fontSize='sm'>{team.tank2}</Text>
-          <Text flex={1} fontSize='sm'>{team.support1}</Text>
-          <Text flex={1} fontSize='sm'>{team.support2}</Text>
+          <Text align='center' flex={1} fontSize='sm'>{dps1}</Text>
+          <Text align='center' flex={1} fontSize='sm'>{dps2}</Text>
+          <Text align='center' flex={1} fontSize='sm'>{tank1}</Text>
+          <Text align='center' flex={1} fontSize='sm'>{tank2}</Text>
+          <Text align='center' flex={1} fontSize='sm'>{support1}</Text>
+          <Text align='center' flex={1} fontSize='sm'>{support2}</Text>
         </Flex>
       </Box>
     </Box>

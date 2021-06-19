@@ -1,7 +1,8 @@
+/* eslint-disable eqeqeq */
 import React from 'react'
 import { editUser, getSingleUser, getHeroes, getTeams } from '../../lib/api'
 import useForm from '../../hooks/useForm'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { isOwner } from '../../lib/auth'
 
 import {
@@ -39,6 +40,7 @@ function Profile() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [teams, setTeams] = React.useState(null)
   const [heroes, setHeroes] = React.useState([])
+  const history = useHistory()
   const { formData, setFormData, formErrors, setFormErrors, handleChange } = useForm({
     username: '',
     battletag: '',
@@ -93,7 +95,6 @@ function Profile() {
       setFormErrors(err.response.data)
     }
   }
-
   return (
     <Box m={{ base: 4, md: 10 }}>
       <HStack>
@@ -259,10 +260,35 @@ function Profile() {
         </Box>
         <Flex direction='column' flex={1} m={0}>
           <Text fontSize='3xl'>Teams:</Text>
-          {/* <TeamListing /> */}
-
+          {
+            teams ?
+              teams.map(team => {
+                if (
+                  (team.dps1 && team.dps1.id == id) ||
+                  (team.dps2 && team.dps2.id == id) ||
+                  (team.tank1 && team.tank1.id == id) ||
+                  (team.tank2 && team.tank2.id == id) ||
+                  (team.support1 && team.support1.id == id) ||
+                  (team.support2 && team.support2.id == id)
+                ) {
+                  return (
+                    <TeamListing
+                      key={team.id}
+                      name={team.name ? team.name : 'TEAMNAME'}
+                      dps1={team.dps1 ? team.dps1.username : '?'}
+                      dps2={team.dps2 ? team.dps2.username : '?'}
+                      tank1={team.tank1 ? team.tank1.username : '?'}
+                      tank2={team.tank2 ? team.tank2.username : '?'}
+                      support1={team.support1 ? team.support1.username : '?'}
+                      support2={team.support2 ? team.support2.username : '?'}
+                      teamid={team.id}
+                    />
+                  )
+                }
+              })
+              : ''
+          }
         </Flex>
-
       </Flex>
     </Box >
   )
