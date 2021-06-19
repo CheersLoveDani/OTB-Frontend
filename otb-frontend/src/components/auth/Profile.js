@@ -1,5 +1,5 @@
 import React from 'react'
-import { editUser, getSingleUser } from '../../lib/api'
+import { editUser, getSingleUser, getHeroes, getTeams } from '../../lib/api'
 import useForm from '../../hooks/useForm'
 import { useParams } from 'react-router-dom'
 import { isOwner } from '../../lib/auth'
@@ -30,12 +30,15 @@ import {
 import {
   EditIcon
 } from '@chakra-ui/icons'
+import TeamListing from '../Teams/TeamListing'
 
 
 
 function Profile() {
   const { id } = useParams()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [teams, setTeams] = React.useState(null)
+  const [heroes, setHeroes] = React.useState([])
   const { formData, setFormData, formErrors, setFormErrors, handleChange } = useForm({
     username: '',
     battletag: '',
@@ -55,14 +58,21 @@ function Profile() {
   React.useEffect(() => {
     const getData = async () => {
       try {
-        const response = await getSingleUser(id)
-        setFormData(response.data)
+        const userPromise = getSingleUser(id)
+        const teamsPromise = getTeams()
+        const heroesPromise = getHeroes()
+        const user = await userPromise
+        const teams = await teamsPromise
+        const heroes = await heroesPromise
+        setFormData(user.data)
+        setTeams(teams.data)
+        setHeroes(heroes.data)
       } catch (err) {
         console.log(err)
       }
     }
     getData()
-  }, [id, setFormData])
+  }, [id, setFormData, setTeams])
 
   const handleCancel = async () => {
     try {
@@ -247,12 +257,12 @@ function Profile() {
             </Box>
           </Flex>
         </Box>
-
-        <Box flex={1} m={0}>
+        <Flex direction='column' flex={1} m={0}>
           <Text fontSize='3xl'>Teams:</Text>
-          <Box border='2px' height='4em' borderColor='gray.600' rounded='5px'>
-          </Box>
-        </Box>
+          {/* <TeamListing /> */}
+
+        </Flex>
+
       </Flex>
     </Box >
   )
@@ -264,7 +274,7 @@ function BannerHeroImg({ heroformData }) {
     m={{ base: 0.5, md: 1 }} border='1px'
     rounded='5px'
     borderColor='whiteAlpha.300'
-    src={heroformData ? heroformData.imgBanner : 'https://res.cloudinary.com/sirdancloud/image/upload/v1624032403/OTB/missing-img-banner_etypbg.png'}
+    src={heroformData ? heroformData.imgBanner : 'https://res.cloudinary.com/sirdancloud/image/upload/v1624032691/OTB/missing-img-banner_d0r4lz.png'}
     _hover={{
       borderColor: 'gray.400',
     }}

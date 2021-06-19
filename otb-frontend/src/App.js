@@ -10,15 +10,6 @@ import Nav from './components/common/Nav'
 import theme from './theme'
 
 function App() {
-  React.useEffect(() => {
-    const getData = async () => {
-      const res = await fetch('/api/endpoint') // * <-- replace with your endpoint
-      const data = await res.json()
-      console.log(data)
-    }
-    getData()
-  })
-
   return (
     <ChakraProvider theme={theme}>
       <BrowserRouter>

@@ -36,3 +36,11 @@ export function editUser(profileId, formdata) {
   }
   return axios.put(`${URL}/auth/profile/${profileId}/`, formattedFormData, headers())
 }
+
+export function getTeams() {
+  return axios.get(`${URL}/teams/`)
+}
+
+export function getHeroes() {
+  return axios.get(`${URL}/heroes/`)
+}
