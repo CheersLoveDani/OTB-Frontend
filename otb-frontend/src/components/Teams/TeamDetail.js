@@ -90,7 +90,7 @@ function TeamDetail() {
   }
 
   return (
-    <Box m={{ base: 2, lg: 10 }}>
+    <Box m={{ base: 2, lg: 10, '2xl': 40 }}>
       <Flex>
         <Heading as='span' m={1}>{team && team.name}</Heading>
         <Avatar src={team && team.icon} m={1} />
@@ -244,7 +244,7 @@ function TeamDetail() {
             w={{ base: '95%', sm: '30%', md: '50%' }}
             m={3}
             colorScheme='red'
-            fontSize={{ base: '4vw', sm: '2vw' }}
+            fontSize={{ base: '4vw', sm: '2vw', '2xl': '1vw' }}
             isTruncated={true}
             onClick={removePlayer}
           >
@@ -340,7 +340,7 @@ function MissingPlayerCard({ onTeam, name }) {
               <Button
                 w='90%'
                 m={3}
-                fontSize={{ base: '4vw', sm: '1.5vw' }}
+                fontSize={{ base: '4vw', sm: '1.5vw', '2xl': '0.8vw' }}
                 isTruncated={true}
                 onClick={joinTeam}
               >

@@ -14,7 +14,7 @@ function TeamListing({ name, dps1, dps2, tank1, tank2, support1, support2, teami
       <Box
         bgColor='blue.800'
         border='1px'
-        height='5em'
+        minHeight='5em'
         borderColor='gray.700'
         rounded='5px'
         _hover={{
