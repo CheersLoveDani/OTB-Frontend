@@ -2,7 +2,7 @@
 import React from 'react'
 import { editUser, getSingleUser, getHeroes, getTeams } from '../../lib/api'
 import useForm from '../../hooks/useForm'
-import { useHistory, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { isOwner } from '../../lib/auth'
 
 import {
@@ -25,7 +25,11 @@ import {
   Input,
   Button,
   FormHelperText,
-  Select
+  Select,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem
 } from '@chakra-ui/react'
 
 import {
@@ -33,14 +37,12 @@ import {
 } from '@chakra-ui/icons'
 import TeamListing from '../Teams/TeamListing'
 
-
-
 function Profile() {
   const { id } = useParams()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [teams, setTeams] = React.useState(null)
   const [heroes, setHeroes] = React.useState([])
-  const history = useHistory()
+  const [unsavedChanges, setUnsavedChanges] = React.useState(false)
   const { formData, setFormData, formErrors, setFormErrors, handleChange } = useForm({
     username: '',
     battletag: '',
@@ -87,14 +89,23 @@ function Profile() {
   }
 
   const handleSave = async (e) => {
-    e.preventDefault()
+    e && e.preventDefault()
     try {
       await editUser(id, formData)
+      setUnsavedChanges(false)
       onClose()
     } catch (err) {
       setFormErrors(err.response.data)
     }
   }
+
+  const handleHeroChange = async (heroData, name) => {
+    const data = { target: { name: name, value: heroData } }
+    console.log(name, data)
+    setUnsavedChanges(true)
+    handleChange(data)
+  }
+
   return (
     <Box m={{ base: 4, md: 10 }}>
       <HStack>
@@ -224,41 +235,95 @@ function Profile() {
           </Box>
           <Flex m={0} direction='column'>
             <Box flex={1} m={0}>
-              <Text fontSize='2xl'>Dps</Text>
+
+              <Text display='inline' fontSize='2xl'>Dps</Text>
+
               <Flex direction='row'>
-                {/* <Box flex={1} m={2}>{formData.dps1 ? formData.dps1.name : 'None'}</Box> */}
-                <BannerHeroImg heroformData={formData.dps1} />
-                {/* <Box flex={1} m={2}>{formData.dps2 ? formData.dps2.name : 'None'}</Box> */}
-                <BannerHeroImg heroformData={formData.dps2} />
-                {/* <Box flex={1} m={2}>{formData.dps3 ? formData.dps3.name : 'None'}</Box> */}
-                <BannerHeroImg heroformData={formData.dps3} />
+                <BannerHeroImg
+                  handleHeroChange={handleHeroChange}
+                  heroformData={formData.dps1}
+                  heroesData={heroes}
+                  name={'dps1'}
+                />
+                <BannerHeroImg
+                  handleHeroChange={handleHeroChange}
+                  heroformData={formData.dps2}
+                  heroesData={heroes}
+                  name={'dps2'}
+                />
+                <BannerHeroImg
+                  handleHeroChange={handleHeroChange}
+                  heroformData={formData.dps3}
+                  heroesData={heroes}
+                  name={'dps3'}
+                />
               </Flex>
             </Box>
             <Box flex={1} m={0}>
               <Text fontSize='2xl'>Tank</Text>
+
               <Flex direction='row'>
-                {/* <Box flex={1} m={2}>{formData.tank1 ? formData.tank1.name : 'None'}</Box> */}
-                <BannerHeroImg heroformData={formData.tank1} />
-                {/* <Box flex={1} m={2}>{formData.tank2 ? formData.tank2.name : 'None'}</Box> */}
-                <BannerHeroImg heroformData={formData.tank2} />
-                {/* <Box flex={1} m={2}>{formData.tank3 ? formData.tank3.name : 'None'}</Box> */}
-                <BannerHeroImg heroformData={formData.tank3} />
+                <BannerHeroImg
+                  handleHeroChange={handleHeroChange}
+                  heroformData={formData.tank1}
+                  heroesData={heroes}
+                  name={'tank1'}
+                />
+                <BannerHeroImg
+                  handleHeroChange={handleHeroChange}
+                  heroformData={formData.tank2}
+                  heroesData={heroes}
+                  name={'tank2'}
+                />
+                <BannerHeroImg
+                  handleHeroChange={handleHeroChange}
+                  heroformData={formData.tank3}
+                  heroesData={heroes}
+                  name={'tank3'}
+                />
               </Flex>
             </Box>
             <Box flex={1} m={0}>
               <Text fontSize='2xl'>Support</Text>
               <Flex direction='row'>
-                {/* <Box flex={1} m={2}>{formData.support1 ? formData.support1.name : 'None'}</Box> */}
-                <BannerHeroImg heroformData={formData.support1} />
-                {/* <Box flex={1} m={2}>{formData.support2 ? formData.support2.name : 'None'}</Box> */}
-                <BannerHeroImg heroformData={formData.support2} />
-                {/* <Box flex={1} m={2}>{formData.support3 ? formData.support3.name : 'None'}</Box> */}
-                <BannerHeroImg heroformData={formData.support3} />
+                <BannerHeroImg
+                  handleHeroChange={handleHeroChange}
+                  heroformData={formData.support1}
+                  heroesData={heroes}
+                  name={'support1'}
+                />
+                <BannerHeroImg
+                  handleHeroChange={handleHeroChange}
+                  heroformData={formData.support2}
+                  heroesData={heroes}
+                  name={'support2'}
+                />
+                <BannerHeroImg
+                  handleHeroChange={handleHeroChange}
+                  heroformData={formData.support3}
+                  heroesData={heroes}
+                  name={'support3'}
+                />
               </Flex>
             </Box>
           </Flex>
+          {isOwner(id) &&
+            <Button
+              mt={3}
+              colorScheme='green'
+              onClick={handleSave}
+              size='lg'
+              variant='outline'
+            >
+              Save
+            </Button>}
+          {unsavedChanges ?
+            <Text color='red.400' ml={5} display='inline' >Warning! Unsaved Changes!</Text>
+            : ''
+          }
         </Box>
-        <Flex direction='column' flex={1} m={0}>
+
+        <Flex direction='column' flex={1} ml={{ base: 0, md: 2, lg: 4 }}>
           <Text fontSize='3xl'>Teams:</Text>
           {
             teams ?
@@ -294,17 +359,50 @@ function Profile() {
   )
 }
 
-function BannerHeroImg({ heroformData }) {
-  return (<Image
-    w='32%'
-    m={{ base: 0.5, md: 1 }} border='1px'
-    rounded='5px'
-    borderColor='whiteAlpha.300'
-    src={heroformData ? heroformData.imgBanner : 'https://res.cloudinary.com/sirdancloud/image/upload/v1624032691/OTB/missing-img-banner_d0r4lz.png'}
-    _hover={{
-      borderColor: 'gray.400',
-    }}
-  />
+function BannerHeroImg({ heroformData, heroesData, handleHeroChange, name }) {
+  const { id } = useParams()
+  return (
+    <Menu w='32%' gutter={-300}>
+      <MenuButton >
+        <Image
+          m={{ base: 0.5, md: 1 }}
+          border='1px'
+          rounded='5px'
+          borderColor='whiteAlpha.300'
+          src={heroformData ? heroformData.imgBanner : 'https://res.cloudinary.com/sirdancloud/image/upload/v1624032691/OTB/missing-img-banner_d0r4lz.png'}
+          _hover={{
+            borderColor: 'gray.400',
+          }}
+        />
+      </MenuButton>
+      {
+        isOwner(id) &&
+        <MenuList w='2%'>
+          {
+            heroesData.map(hero => {
+              if (heroformData && hero.role === heroformData.role) {
+                return (
+                  <MenuItem
+                    key={hero.id}
+                    onClick={() => handleHeroChange(hero, name)}
+                    name='hero'
+                  >
+                    <Text>
+                      {hero ? hero.name : 'loading...'}
+                    </Text>
+                    {/* <Image
+                rounded='5px'
+                src={hero ? hero.imgBanner : 'https://res.cloudinary.com/sirdancloud/image/upload/v1624032691/OTB/missing-img-banner_d0r4lz.png'}
+              /> */}
+                  </MenuItem>
+                )
+              }
+            })
+          }
+        </MenuList>
+      }
+
+    </Menu >
   )
 }
 

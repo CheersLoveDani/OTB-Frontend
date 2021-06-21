@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 export function setToken(token) {
   window.localStorage.setItem('token', token)
 }
@@ -28,7 +29,7 @@ export function isAuthenticated() {
 export function isOwner(userId) {
   const payload = getPayload()
   if (!payload) return false
-  return userId === payload.sub
+  return userId == payload.sub
 }
 
 export function getCurrentUserId() {

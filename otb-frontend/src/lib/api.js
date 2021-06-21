@@ -18,7 +18,7 @@ export function registerUser(formdata) {
 }
 
 export function getSingleUser(profileId) {
-  return axios.get(`${URL}/auth/profile/${profileId}`)
+  return axios.get(`${URL}/auth/profile/${profileId}/`)
 }
 
 export function editUser(profileId, formdata) {
@@ -39,6 +39,10 @@ export function editUser(profileId, formdata) {
 
 export function getTeams() {
   return axios.get(`${URL}/teams/`)
+}
+
+export function getSingleTeam(teamId) {
+  return axios.get(`${URL}/teams/${teamId}/`)
 }
 
 export function getHeroes() {
