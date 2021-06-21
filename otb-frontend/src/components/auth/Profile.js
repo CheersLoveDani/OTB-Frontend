@@ -82,6 +82,7 @@ function Profile() {
     try {
       const response = await getSingleUser(id)
       setFormData(response.data)
+      setUnsavedChanges(false)
       onClose()
     } catch (err) {
       console.log(err)
@@ -95,6 +96,7 @@ function Profile() {
       setUnsavedChanges(false)
       onClose()
     } catch (err) {
+      console.log(err)
       setFormErrors(err.response.data)
     }
   }
@@ -207,7 +209,7 @@ function Profile() {
 
       <Flex direction={{ base: 'column', lg: 'row' }}>
         <Box m={{ base: 0, md: 2 }} flex='1'>
-          <Box mt={10} mb={10}>
+          <Box mt={3} mb={10}>
             <HStack>
               <Text fontSize='2xl'>
                 Username: {formData.username ? formData.username : 'None'}
@@ -244,18 +246,21 @@ function Profile() {
                   heroformData={formData.dps1}
                   heroesData={heroes}
                   name={'dps1'}
+                  role='DPS'
                 />
                 <BannerHeroImg
                   handleHeroChange={handleHeroChange}
                   heroformData={formData.dps2}
                   heroesData={heroes}
                   name={'dps2'}
+                  role='DPS'
                 />
                 <BannerHeroImg
                   handleHeroChange={handleHeroChange}
                   heroformData={formData.dps3}
                   heroesData={heroes}
                   name={'dps3'}
+                  role='DPS'
                 />
               </Flex>
             </Box>
@@ -268,18 +273,21 @@ function Profile() {
                   heroformData={formData.tank1}
                   heroesData={heroes}
                   name={'tank1'}
+                  role='TANK'
                 />
                 <BannerHeroImg
                   handleHeroChange={handleHeroChange}
                   heroformData={formData.tank2}
                   heroesData={heroes}
                   name={'tank2'}
+                  role='TANK'
                 />
                 <BannerHeroImg
                   handleHeroChange={handleHeroChange}
                   heroformData={formData.tank3}
                   heroesData={heroes}
                   name={'tank3'}
+                  role='TANK'
                 />
               </Flex>
             </Box>
@@ -291,32 +299,48 @@ function Profile() {
                   heroformData={formData.support1}
                   heroesData={heroes}
                   name={'support1'}
+                  role='SUPPORT'
                 />
                 <BannerHeroImg
                   handleHeroChange={handleHeroChange}
                   heroformData={formData.support2}
                   heroesData={heroes}
                   name={'support2'}
+                  role='SUPPORT'
                 />
                 <BannerHeroImg
                   handleHeroChange={handleHeroChange}
                   heroformData={formData.support3}
                   heroesData={heroes}
                   name={'support3'}
+                  role='SUPPORT'
                 />
               </Flex>
             </Box>
           </Flex>
           {isOwner(id) &&
-            <Button
-              mt={3}
-              colorScheme='green'
-              onClick={handleSave}
-              size='lg'
-              variant='outline'
-            >
-              Save
-            </Button>}
+            <>
+              <Button
+                mt={3}
+                mr={1}
+                colorScheme='red'
+                onClick={handleCancel}
+                size='lg'
+                variant='outline'
+              >
+                Cancel
+              </Button>
+              <Button
+                mt={3}
+                colorScheme='green'
+                onClick={handleSave}
+                size='lg'
+                variant='outline'
+              >
+                Save
+              </Button>
+            </>
+          }
           {unsavedChanges ?
             <Text color='red.400' ml={5} display='inline' >Warning! Unsaved Changes!</Text>
             : ''
@@ -359,7 +383,7 @@ function Profile() {
   )
 }
 
-function BannerHeroImg({ heroformData, heroesData, handleHeroChange, name }) {
+function BannerHeroImg({ heroformData, role, heroesData, handleHeroChange, name }) {
   const { id } = useParams()
   return (
     <Menu w='32%' gutter={-300}>
@@ -380,7 +404,7 @@ function BannerHeroImg({ heroformData, heroesData, handleHeroChange, name }) {
         <MenuList w='2%'>
           {
             heroesData.map(hero => {
-              if (heroformData && hero.role === heroformData.role) {
+              if (hero.role === role) {
                 return (
                   <MenuItem
                     key={hero.id}

@@ -24,15 +24,15 @@ export function getSingleUser(profileId) {
 export function editUser(profileId, formdata) {
   const formattedFormData = {
     ...formdata,
-    dps1: formdata.dps1.id,
-    dps2: formdata.dps2.id,
-    dps3: formdata.dps3.id,
-    tank1: formdata.tank1.id,
-    tank2: formdata.tank2.id,
-    tank3: formdata.tank3.id,
-    support1: formdata.support1.id,
-    support2: formdata.support2.id,
-    support3: formdata.support3.id,
+    dps1: formdata.dps1 && formdata.dps1.id,
+    dps2: formdata.dps2 && formdata.dps2.id,
+    dps3: formdata.dps3 && formdata.dps3.id,
+    tank1: formdata.tank1 && formdata.tank1.id,
+    tank2: formdata.tank2 && formdata.tank2.id,
+    tank3: formdata.tank3 && formdata.tank3.id,
+    support1: formdata.support1 && formdata.support1.id,
+    support2: formdata.support2 && formdata.support2.id,
+    support3: formdata.support3 && formdata.support3.id,
   }
   return axios.put(`${URL}/auth/profile/${profileId}/`, formattedFormData, headers())
 }

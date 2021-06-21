@@ -11,6 +11,7 @@ import {
   Image,
   Text
 } from '@chakra-ui/react'
+import { isOwner } from '../../lib/auth'
 
 function TeamDetail() {
   const [team, setTeam] = React.useState(null)
@@ -129,14 +130,30 @@ function PlayerCard({ user, hero1, hero2, hero3 }) {
           <Image rounded='5px' src={hero1 ? hero1.imgLarge : 'https://res.cloudinary.com/sirdancloud/image/upload/v1624032399/OTB/missing-img-large_qgxabc.png'} />
         </Box>
         <Box flex={2}>
-          <Text m={2} mb={0.5} fontSize={{ base: 'small', md: 'x-large' }} isTruncated={true} >{user.username}</Text>
-          <Text ml={2} fontSize={{ base: 'x-small', md: 'small' }} isTruncated={true} >{user.battletag}</Text>
-          <Text ml={2} fontSize={{ base: 'x-small', md: 'small' }} isTruncated={true} >Rank: Rank</Text>
+          <Text m={2} mb={0.5} fontSize={{ base: '6vw', sm: '3vw' }} isTruncated={true} >{user.username}</Text>
+          <Text ml={2} fontSize={{ base: '3vw', sm: '1.2vw' }} isTruncated={true} >{user.battletag}</Text>
+          <Text ml={2} fontSize={{ base: '4vw', sm: '2vw' }} isTruncated={true} >SR: {user.sr}</Text>
           <Image rounded='5px' mt={2} src={hero2 ? hero2.imgBanner : 'https://res.cloudinary.com/sirdancloud/image/upload/v1624032691/OTB/missing-img-banner_d0r4lz.png'} />
           < Image rounded='5px' mt={2} src={hero3 ? hero3.imgBanner : 'https://res.cloudinary.com/sirdancloud/image/upload/v1624032691/OTB/missing-img-banner_d0r4lz.png'} />
         </Box>
+
+
       </Flex>
-    </Box>
+      {isOwner(user.id) &&
+        <Center>
+          <Button
+            w='95%'
+            m={3}
+            colorScheme='red'
+            fontSize='1vw'
+            isTruncated={true}
+          >
+            Leave team?
+          </Button>
+        </Center>
+      }
+    </Box >
+
   )
 }
 
@@ -153,6 +170,8 @@ function MissingPlayerCard() {
             <Button
               w='90%'
               m={3}
+              fontSize={{ base: '4vw', sm: '1.5vw' }}
+              isTruncated={true}
             >
               Join this spot?
             </Button>
@@ -160,6 +179,7 @@ function MissingPlayerCard() {
         </Box>
       </Flex>
     </Box>
+
   )
 }
 
