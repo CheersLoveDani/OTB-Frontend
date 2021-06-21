@@ -2,7 +2,7 @@
 import React from 'react'
 import { getTeams } from '../../lib/api'
 import TeamListing from './TeamListing'
-import { getCurrentUserId, isAuthenticated } from '../../lib/auth'
+import { getCurrentUserId, isAuthenticated, isOwner } from '../../lib/auth'
 
 import {
   Box,
@@ -33,6 +33,30 @@ function Teams() {
     <Box m={{ base: 2, lg: 10 }}>
       {isAuthenticated() &&
         <Flex direction='column' flex={1} ml={{ base: 0, md: 2, lg: 4 }}>
+          <Text fontSize='3xl'>Owned Teams:</Text>
+          {
+            teams ?
+              teams.map(team => {
+                if (
+                  isOwner(team.owner)
+                ) {
+                  return (
+                    <TeamListing
+                      key={team.id}
+                      name={team.name ? team.name : 'TEAMNAME'}
+                      dps1={team.dps1 ? team.dps1.username : '?'}
+                      dps2={team.dps2 ? team.dps2.username : '?'}
+                      tank1={team.tank1 ? team.tank1.username : '?'}
+                      tank2={team.tank2 ? team.tank2.username : '?'}
+                      support1={team.support1 ? team.support1.username : '?'}
+                      support2={team.support2 ? team.support2.username : '?'}
+                      teamid={team.id}
+                    />
+                  )
+                }
+              })
+              : ''
+          }
           <Text fontSize='3xl'>My Teams:</Text>
           {
             teams ?
