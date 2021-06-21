@@ -1,16 +1,30 @@
 /* eslint-disable eqeqeq */
 import React from 'react'
-import { editTeam, getSingleTeam, removePlayerFromTeam } from '../../lib/api'
+import { deleteTeam, editTeam, getSingleTeam, removePlayerFromTeam } from '../../lib/api'
 import { useHistory, useParams } from 'react-router-dom'
 import { getCurrentUserId, isOwner } from '../../lib/auth'
 
 import {
+  Avatar,
   Box,
   Button,
   Center,
   Flex,
+  // FormControl,
+  // FormHelperText,
+  // FormLabel,
   Heading,
   Image,
+  // Input,
+  // Popover,
+  // PopoverArrow,
+  // PopoverBody,
+  // PopoverCloseButton,
+  // PopoverContent,
+  // PopoverHeader,
+  // PopoverTrigger,
+  // Portal,
+  Spacer,
   Text
 } from '@chakra-ui/react'
 import useForm from '../../hooks/useForm'
@@ -20,6 +34,12 @@ function TeamDetail() {
   const [team, setTeam] = React.useState(null)
   const [onTeam, setOnTeam] = React.useState(false)
   const { id } = useParams()
+  const history = useHistory()
+  // const { formData, setFormData, handleChange } = useForm({
+  //   name: '',
+  //   private: false,
+  //   icon: '',
+  // })
 
   React.useEffect(() => {
     try {
@@ -60,12 +80,77 @@ function TeamDetail() {
     }
   }
 
-
+  const handleDelete = async () => {
+    try {
+      await deleteTeam(id)
+      history.push('/teams')
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <Box m={{ base: 2, lg: 10 }}>
-      <Heading>{team && team.name}</Heading>
+      <Flex>
+        <Heading as='span' m={1}>{team && team.name}</Heading>
+        <Avatar src={team && team.icon} m={1} />
+        <Spacer />
+        {
+          isOwner(team && team.owner) &&
+          <>
+            {/* <Popover>
+              <PopoverTrigger>
+                <Button m={1} colorScheme='orange' variant='outline'>Edit</Button>
+              </PopoverTrigger>
+              <Portal>
+                <PopoverContent>
+                  <PopoverArrow />
+                  <PopoverHeader>Edit team</PopoverHeader>
+                  <PopoverCloseButton />
+                  <PopoverBody>
+                    <form onSubmit={handleSubmit}>
+                      <FormControl pb={2} id='name' colorScheme='blackAlpha'>
+                        <FormLabel>Name</FormLabel>
+                        <Input
+                          type='text'
+                          placeholder='Extra Awesome Team Name'
+                          onChange={handleChange}
+                          value={formData.name}
+                          name='name'
+                        />
+                        <FormHelperText>What is your team called?</FormHelperText>
+                      </FormControl>
+                      <FormControl pb={4} id='icon' colorScheme='blackAlpha'>
+                        <FormLabel>Icon</FormLabel>
+                        <Input
+                          type='text'
+                          placeholder='AwesomeIcon.png'
+                          onChange={handleChange}
+                          value={formData.icon}
+                          name='icon'
+                        />
+                        <FormHelperText>Enter your teams icon url!</FormHelperText>
+                      </FormControl>
+                      <Button type='submit' colorScheme='green'>
+                        Submit
+                      </Button>
+                    </form>
+                  </PopoverBody>
+                </PopoverContent>
+              </Portal>
+            </Popover> */}
 
+            <Button
+              m={1}
+              colorScheme='red'
+              variant='outline'
+              onClick={handleDelete}
+            >
+              Delete
+            </Button>
+          </>
+        }
+      </Flex>
       {
         team ?
           <Flex direction={{ base: 'column', sm: 'row' }}>
@@ -167,7 +252,7 @@ function TeamDetail() {
           </Button>
         </Center>
       }
-    </Box>
+    </Box >
   )
 }
 
@@ -220,7 +305,6 @@ function MissingPlayerCard({ onTeam, name }) {
 
 
   React.useEffect(() => {
-    console.log('useffect running')
     const getData = async () => {
       try {
         const data = await getSingleTeam(id)
@@ -239,6 +323,8 @@ function MissingPlayerCard({ onTeam, name }) {
       console.log(err)
     }
   }
+
+
 
   return (
     <Box m={1} flex={1} width={{ base: '100%', sm: '15%' }} rounded='5px' border='1px'>

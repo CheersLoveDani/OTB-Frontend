@@ -84,6 +84,13 @@ export function editTeam(teamId, formdata, name, playerId) {
     ...formattedFormData,
     [name]: playerId,
   }
-  console.log(formdata, formattedFormData, newFormData)
   return axios.put(`${URL}/teams/${teamId}/`, newFormData, headers())
+}
+
+export function createTeam(formdata) {
+  return axios.post(`${URL}/teams/`, formdata, headers())
+}
+
+export function deleteTeam(teamId) {
+  return axios.delete(`${URL}/teams/${teamId}/`, headers())
 }
