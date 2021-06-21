@@ -103,7 +103,6 @@ function Profile() {
 
   const handleHeroChange = async (heroData, name) => {
     const data = { target: { name: name, value: heroData } }
-    console.log(name, data)
     setUnsavedChanges(true)
     handleChange(data)
   }

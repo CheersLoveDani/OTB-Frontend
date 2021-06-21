@@ -25,12 +25,12 @@ function TeamListing({ name, dps1, dps2, tank1, tank2, support1, support2, teami
           {name}
         </Text>
         <Flex direction='row' m={1} >
-          <Text align='center' flex={1} fontSize='sm' isTruncated={true} >Dps: {dps1}</Text>
-          <Text align='center' flex={1} fontSize='sm' isTruncated={true} >Dps: {dps2}</Text>
-          <Text align='center' flex={1} fontSize='sm' isTruncated={true} >Tank: {tank1}</Text>
-          <Text align='center' flex={1} fontSize='sm' isTruncated={true} >Tank: {tank2}</Text>
-          <Text align='center' flex={1} fontSize='sm' isTruncated={true} >Support: {support1}</Text>
-          <Text align='center' flex={1} fontSize='sm' isTruncated={true} >Support: {support2}</Text>
+          <Text align='center' flex={1} fontSize='1.2vw' isTruncated={true} >Dps: {dps1}</Text>
+          <Text align='center' flex={1} fontSize='1.2vw' isTruncated={true} >Dps: {dps2}</Text>
+          <Text align='center' flex={1} fontSize='1.2vw' isTruncated={true} >Tank: {tank1}</Text>
+          <Text align='center' flex={1} fontSize='1.2vw' isTruncated={true} >Tank: {tank2}</Text>
+          <Text align='center' flex={1} fontSize='1.2vw' isTruncated={true} >Sup: {support1}</Text>
+          <Text align='center' flex={1} fontSize='1.2vw' isTruncated={true} >Sup: {support2}</Text>
         </Flex>
       </Box>
     </Box>

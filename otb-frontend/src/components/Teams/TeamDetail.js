@@ -1,6 +1,8 @@
+/* eslint-disable eqeqeq */
 import React from 'react'
-import { getSingleTeam } from '../../lib/api'
+import { editTeam, getSingleTeam, removePlayerFromTeam } from '../../lib/api'
 import { useHistory, useParams } from 'react-router-dom'
+import { getCurrentUserId, isOwner } from '../../lib/auth'
 
 import {
   Box,
@@ -11,31 +13,59 @@ import {
   Image,
   Text
 } from '@chakra-ui/react'
-import { isOwner } from '../../lib/auth'
+import useForm from '../../hooks/useForm'
+
 
 function TeamDetail() {
   const [team, setTeam] = React.useState(null)
+  const [onTeam, setOnTeam] = React.useState(false)
   const { id } = useParams()
 
-
   React.useEffect(() => {
+    try {
+      if (
+        team &&
+        ((team.dps1 && isOwner(team.dps1.id)) ||
+          (team.dps2 && isOwner(team.dps2.id)) ||
+          (team.tank1 && isOwner(team.tank1.id)) ||
+          (team.tank2 && isOwner(team.tank2.id)) ||
+          (team.support1 && isOwner(team.support1.id)) ||
+          (team.support2 && isOwner(team.support2.id)))
+      ) {
+        setOnTeam(true)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
+
     const getData = async () => {
       try {
         const teamPromise = getSingleTeam(id)
-        const team = await teamPromise
-        setTeam(team.data)
+        const teamdata = await teamPromise
+        setTeam(teamdata.data)
       } catch (err) {
         console.log(err)
       }
     }
     getData()
-  }, [id])
+  }, [id, team, onTeam])
+
+  const removePlayer = async () => {
+    try {
+      await removePlayerFromTeam(id, getCurrentUserId(), team)
+      location.reload()
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
 
 
   return (
     <Box m={{ base: 2, lg: 10 }}>
       <Heading>{team && team.name}</Heading>
+
       {
         team ?
           <Flex direction={{ base: 'column', sm: 'row' }}>
@@ -47,7 +77,10 @@ function TeamDetail() {
                 hero3={team.dps1.dps3}
               />
               :
-              <MissingPlayerCard />
+              <MissingPlayerCard
+                onTeam={onTeam}
+                name='dps1'
+              />
             }
             {team.dps2 ?
               <PlayerCard
@@ -57,7 +90,10 @@ function TeamDetail() {
                 hero3={team.dps2.dps3}
               />
               :
-              <MissingPlayerCard />
+              <MissingPlayerCard
+                onTeam={onTeam}
+                name='dps2'
+              />
             }
             {team.tank1 ?
               <PlayerCard
@@ -67,7 +103,10 @@ function TeamDetail() {
                 hero3={team.tank1.tank3}
               />
               :
-              <MissingPlayerCard />
+              <MissingPlayerCard
+                onTeam={onTeam}
+                name='tank1'
+              />
             }
             {team.tank2 ?
               <PlayerCard
@@ -77,7 +116,10 @@ function TeamDetail() {
                 hero3={team.tank2.tank3}
               />
               :
-              <MissingPlayerCard />
+              <MissingPlayerCard
+                onTeam={onTeam}
+                name='tank2'
+              />
             }
             {team.support1 ?
               <PlayerCard
@@ -87,7 +129,10 @@ function TeamDetail() {
                 hero3={team.support1.support3}
               />
               :
-              <MissingPlayerCard />
+              <MissingPlayerCard
+                onTeam={onTeam}
+                name='support1'
+              />
             }
             {team.support2 ?
               <PlayerCard
@@ -97,14 +142,31 @@ function TeamDetail() {
                 hero3={team.support2.support3}
               />
               :
-              <MissingPlayerCard />
+              <MissingPlayerCard
+                onTeam={onTeam}
+                name='support2'
+              />
             }
 
           </Flex>
           :
           <Text>Loading...</Text>
       }
-
+      {
+        onTeam &&
+        <Center>
+          <Button
+            w={{ base: '95%', sm: '30%', md: '50%' }}
+            m={3}
+            colorScheme='red'
+            fontSize={{ base: '4vw', sm: '2vw' }}
+            isTruncated={true}
+            onClick={removePlayer}
+          >
+            Leave team?
+          </Button>
+        </Center>
+      }
     </Box>
   )
 }
@@ -136,28 +198,48 @@ function PlayerCard({ user, hero1, hero2, hero3 }) {
           <Image rounded='5px' mt={2} src={hero2 ? hero2.imgBanner : 'https://res.cloudinary.com/sirdancloud/image/upload/v1624032691/OTB/missing-img-banner_d0r4lz.png'} />
           < Image rounded='5px' mt={2} src={hero3 ? hero3.imgBanner : 'https://res.cloudinary.com/sirdancloud/image/upload/v1624032691/OTB/missing-img-banner_d0r4lz.png'} />
         </Box>
-
-
       </Flex>
-      {isOwner(user.id) &&
-        <Center>
-          <Button
-            w='95%'
-            m={3}
-            colorScheme='red'
-            fontSize='1vw'
-            isTruncated={true}
-          >
-            Leave team?
-          </Button>
-        </Center>
-      }
     </Box >
 
   )
 }
 
-function MissingPlayerCard() {
+function MissingPlayerCard({ onTeam, name }) {
+  const { id } = useParams()
+  const { formData, setFormData } = useForm({
+    name: '',
+    private: false,
+    icon: '',
+    dps1: '',
+    dps2: '',
+    tank1: '',
+    tank2: '',
+    support1: '',
+    support2: '',
+  })
+
+
+  React.useEffect(() => {
+    console.log('useffect running')
+    const getData = async () => {
+      try {
+        const data = await getSingleTeam(id)
+        setFormData(data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getData()
+  }, [id, setFormData])
+
+  const joinTeam = async () => {
+    try {
+      await editTeam(id, formData.data, name, getCurrentUserId())
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <Box m={1} flex={1} width={{ base: '100%', sm: '15%' }} rounded='5px' border='1px'>
       <Flex direction={{ base: 'row', sm: 'column' }}>
@@ -166,16 +248,20 @@ function MissingPlayerCard() {
         </Box>
         <Box flex={2}>
           <Text m={2} mb={0.5} fontSize='x-large' textAlign='center' >Player Needed</Text>
-          <Center>
-            <Button
-              w='90%'
-              m={3}
-              fontSize={{ base: '4vw', sm: '1.5vw' }}
-              isTruncated={true}
-            >
-              Join this spot?
-            </Button>
-          </Center>
+          {
+            !onTeam &&
+            <Center>
+              <Button
+                w='90%'
+                m={3}
+                fontSize={{ base: '4vw', sm: '1.5vw' }}
+                isTruncated={true}
+                onClick={joinTeam}
+              >
+                Join this spot?
+              </Button>
+            </Center>
+          }
         </Box>
       </Flex>
     </Box>

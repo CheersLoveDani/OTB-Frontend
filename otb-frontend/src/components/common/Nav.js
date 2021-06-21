@@ -29,7 +29,7 @@ function Nav() {
             </>
             :
             <>
-              <Link to='/'><Button colorScheme='orange'>Register</Button></Link>
+              <Link to='/'><Button colorScheme='orange'>Register/Login</Button></Link>
             </>
         }
 

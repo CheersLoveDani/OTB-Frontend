@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import axios from 'axios'
 import { getToken } from './auth'
 
@@ -47,4 +48,42 @@ export function getSingleTeam(teamId) {
 
 export function getHeroes() {
   return axios.get(`${URL}/heroes/`)
+}
+
+export function removePlayerFromTeam(teamId, playerId, formdata) {
+  const editedFormData = {
+    ...formdata,
+  }
+  if (formdata.dps1 && formdata.dps1.id == playerId) {
+    editedFormData.dps1 = null
+  } else if (formdata.dps2 && formdata.dps2.id == playerId) {
+    editedFormData.dps2 = null
+  } else if (formdata.tank1 && formdata.tank1.id == playerId) {
+    editedFormData.tank1 = null
+  } else if (formdata.tank2 && formdata.tank2.id == playerId) {
+    editedFormData.tank2 = null
+  } else if (formdata.support1 && formdata.support1.id == playerId) {
+    editedFormData.support1 = null
+  } else if (formdata.support2 && formdata.support2.id == playerId) {
+    editedFormData.support2 = null
+  }
+  return editTeam(teamId, editedFormData)
+}
+
+export function editTeam(teamId, formdata, name, playerId) {
+  const formattedFormData = {
+    ...formdata,
+    dps1: formdata.dps1 && formdata.dps1.id,
+    dps2: formdata.dps2 && formdata.dps2.id,
+    tank1: formdata.tank1 && formdata.tank1.id,
+    tank2: formdata.tank2 && formdata.tank2.id,
+    support1: formdata.support1 && formdata.support1.id,
+    support2: formdata.support2 && formdata.support2.id,
+  }
+  const newFormData = {
+    ...formattedFormData,
+    [name]: playerId,
+  }
+  console.log(formdata, formattedFormData, newFormData)
+  return axios.put(`${URL}/teams/${teamId}/`, newFormData, headers())
 }
