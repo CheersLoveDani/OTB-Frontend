@@ -35,7 +35,7 @@ import {
 import {
   EditIcon
 } from '@chakra-ui/icons'
-import TeamListing from '../Teams/TeamListing'
+import TeamListing from '../teams/TeamListing'
 
 function Profile() {
   const { id } = useParams()
