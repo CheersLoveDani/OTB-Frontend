@@ -1,8 +1,9 @@
 /* eslint-disable eqeqeq */
 import axios from 'axios'
 import { getToken } from './auth'
+import { baseUrl } from '../config'
 
-const URL = '/api'
+const URL = baseUrl
 
 function headers() {
   return {
