@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import axios from 'axios'
 import { getToken } from './auth'
-import { baseUrl as URL } from '../config'
+import { baseUrl } from '../config'
 
 // const URL = baseUrl
 
@@ -12,15 +12,15 @@ function headers() {
 }
 
 export function loginUser(formData) {
-  return axios.post(`${URL}/auth/login/`, formData)
+  return axios.post(`${baseUrl}/auth/login/`, formData)
 }
 
 export function registerUser(formdata) {
-  return axios.post(`${URL}/auth/register/`, formdata)
+  return axios.post(`${baseUrl}/auth/register/`, formdata)
 }
 
 export function getSingleUser(profileId) {
-  return axios.get(`${URL}/auth/profile/${profileId}/`)
+  return axios.get(`${baseUrl}/auth/profile/${profileId}/`)
 }
 
 export function editUser(profileId, formdata) {
@@ -36,19 +36,19 @@ export function editUser(profileId, formdata) {
     support2: formdata.support2 && formdata.support2.id,
     support3: formdata.support3 && formdata.support3.id,
   }
-  return axios.put(`${URL}/auth/profile/${profileId}/`, formattedFormData, headers())
+  return axios.put(`${baseUrl}/auth/profile/${profileId}/`, formattedFormData, headers())
 }
 
 export function getTeams() {
-  return axios.get(`${URL}/teams/`)
+  return axios.get(`${baseUrl}/teams/`)
 }
 
 export function getSingleTeam(teamId) {
-  return axios.get(`${URL}/teams/${teamId}/`)
+  return axios.get(`${baseUrl}/teams/${teamId}/`)
 }
 
 export function getHeroes() {
-  return axios.get(`${URL}/heroes/`)
+  return axios.get(`${baseUrl}/heroes/`)
 }
 
 export function removePlayerFromTeam(teamId, playerId, formdata) {
@@ -85,13 +85,13 @@ export function editTeam(teamId, formdata, name, playerId) {
     ...formattedFormData,
     [name]: playerId,
   }
-  return axios.put(`${URL}/teams/${teamId}/`, newFormData, headers())
+  return axios.put(`${baseUrl}/teams/${teamId}/`, newFormData, headers())
 }
 
 export function createTeam(formdata) {
-  return axios.post(`${URL}/teams/`, formdata, headers())
+  return axios.post(`${baseUrl}/teams/`, formdata, headers())
 }
 
 export function deleteTeam(teamId) {
-  return axios.delete(`${URL}/teams/${teamId}/`, headers())
+  return axios.delete(`${baseUrl}/teams/${teamId}/`, headers())
 }
