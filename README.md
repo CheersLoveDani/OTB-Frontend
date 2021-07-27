@@ -1,5 +1,10 @@
 # <img src='https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png'> Project 4: Overwatch Team Builder
 
+### Links
+https://overwatch-team-builder.netlify.app/ <-- Try it here!
+https://github.com/sirdantheawesome/OTB-Frontend <-- Frontend
+https://github.com/sirdantheawesome/OTB-Backend <-- Backend
+
 ## Approach
 
 ### Mockup
