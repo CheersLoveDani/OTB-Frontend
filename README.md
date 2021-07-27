@@ -1,4 +1,4 @@
-# ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Project 4: Overwatch Team Builder
+# <img src='https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png'> Project 4: Overwatch Team Builder
 
 ## Approach
 
@@ -16,34 +16,177 @@ The main elements I wanted functional for an MVP were:
 - Scalability for different devices
 
 I wanted the design to be clean and great to use. I did a mock up considering device scaling from the beginning:
-![](ScreenCaps\Whiteboard-1.png)
-![](ScreenCaps\Whiteboard-2.png)
+<img src='ScreenCaps\Whiteboard-1.png)
+<img src='ScreenCaps\Whiteboard-2.png)
 
 The backend was designed to be function and easy to use:
-![](ScreenCaps\Backend.png)
+<img src='ScreenCaps\Backend.png)
 
 ### Planning
 
 My plan was to work primarily on the backend at first since I planned it out carefully in the whiteboarding phase. The back end was made in Django, the beginning was mainly setting up the Django project and admin panel. I then moved on to the Heroes db model using PostgreSQL.
-![](ScreenCaps\Hero-Model.png)
+
+```py
+from django.db import models
+
+class Hero(models.Model):
+    name = models.CharField(max_length=50)
+    img_large = models.URLField()
+    img_banner = models.URLField()
+
+    DPS = 'DPS'
+    TANK = 'TANK'
+    SUPPORT = 'SUPPORT'
+    ROLE_CHOICES = [
+        (DPS, 'dps'),
+        (TANK, 'tank'),
+        (SUPPORT, 'support')
+    ]
+
+    role = models.CharField(
+        max_length=10,
+        choices=ROLE_CHOICES,
+        default=DPS
+    )
+
+    def __str__(self):
+        return self.name
+
+```
 
 I then moved on to the Team model and the custom User model.
-![](ScreenCaps\Team-Model.png)
-![](ScreenCaps\User-Model.png)
+
+```py
+from django.db import models
+
+class Team(models.Model):
+    name = models.CharField(max_length=50)
+    private = models.BooleanField()
+    icon = models.URLField()
+
+    owner = models.ForeignKey(
+        'jwt_auth.User',
+        related_name='owner_users',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
+    dps_1 = models.ForeignKey(
+        'jwt_auth.User',
+        related_name='dps1_users',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+    dps_2 = models.ForeignKey(...)
+
+    tank_1 = models.ForeignKey(...)
+    tank_2 = models.ForeignKey(...)
+
+    support_1 = models.ForeignKey(...)
+    support_2 = models.ForeignKey(...)
+
+    def __str__(self):
+        return f'{self.name}'
+
+```
+
+```py
+
+from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    email = models.CharField(max_length=50)
+    battletag = models.CharField(max_length=50)
+    sr = models.IntegerField(
+        default=2500,
+        validators=[MinValueValidator(0), MaxValueValidator(5000)]
+    )
+
+    DPS = 'DPS'
+    TANK = 'TANK'
+    SUPPORT = 'SUPPORT'
+    ROLE_CHOICES = [
+        (DPS, 'dps'),
+        (TANK, 'tank'),
+        (SUPPORT, 'support')
+    ]
+    mainrole = models.CharField(
+        max_length=10,
+        choices=ROLE_CHOICES,
+        default=DPS
+    )
+
+    dps_1 = models.ForeignKey(
+        'heroes.Hero',
+        related_name='dps1_heroes',
+        blank=True,
+        null=True,
+        help_text='Must be unique, must be dps',
+        on_delete=models.SET_NULL
+    )
+    dps_2 = models.ForeignKey(...)
+    dps_3 = models.ForeignKey(...)
+
+    tank_1 = models.ForeignKey(...)
+    tank_2 = models.ForeignKey(...)
+    tank_3 = models.ForeignKey(...)
+
+    support_1 = models.ForeignKey(...)
+    support_2 = models.ForeignKey(...)
+    support_3 = models.ForeignKey(...)
+
+```
 
 That was the back end mostly done, one other major thing to do was to set up serialized fields so that requests to the api could get nested information. For example when getting a Team also get the User and the Users selected Heroes.
 
-![](ScreenCaps\Serializer.png)
+```py
+class PopulatedUserSerializer(ModelSerializer):
+    dps_1 = HeroSerializer()
+    dps_2 = HeroSerializer()
+    dps_3 = HeroSerializer()
+
+    tank_1 = HeroSerializer()
+    tank_2 = HeroSerializer()
+    tank_3 = HeroSerializer()
+
+    support_1 = HeroSerializer()
+    support_2 = HeroSerializer()
+    support_3 = HeroSerializer()
+
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'username',
+            'email',
+            'battletag',
+            'sr',
+            'mainrole',
+            'dps_1',
+            'dps_2',
+            'dps_3',
+            'tank_1',
+            'tank_2',
+            'tank_3',
+            'support_1',
+            'support_2',
+            'support_3',
+        )
+```
 
 After the backend was up and working I started work on the frontend. I decided to learn and implement a new CCS React framework called Chakra-UI so I started with setting up a React app and installing Chakra-UI. I then moved on to creating my nav bar which would be present on all pages of the site.
-![](ScreenCaps\NavBar.png)
+<img src='ScreenCaps\NavBar.png'>
 
 After this I add page routes with React Router Dom and added the other pages of the site.
 
-![](ScreenCaps\Profile-Page.png)
-![](ScreenCaps\Register-Page.png)
-![](ScreenCaps\Team-Page.png)
-![](ScreenCaps\Teams-Page.png)
+<img src='ScreenCaps\Profile-Page.png'>
+<img src='ScreenCaps\Register-Page.png'>
+<img src='ScreenCaps\Team-Page.png'>
+<img src='ScreenCaps\Teams-Page.png'>
 
 ## Challenges
 
