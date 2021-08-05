@@ -1,11 +1,23 @@
 # <img src='https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png'> Project 4: Overwatch Team Builder
 
+## Overview
+
+For our fourth and final project at GA we were tasked with making a full stack web app using React for the front end and Django for the back end. We had the option of working in groups or solo and for this one I decided to do a solo project to really round out my skills and make sure I was up to scratch in all areas.
+
 ### Links
+
 https://overwatch-team-builder.netlify.app/ <-- Try it here!
 
 https://github.com/sirdantheawesome/OTB-Frontend <-- Frontend
 
 https://github.com/sirdantheawesome/OTB-Backend <-- Backend
+
+## The Brief
+
+- Make a website using Django-React full stack.
+- Work in small groups of up to three or solo.
+- Complete the project in one week.
+- Deploy the project online and connect the front end to the back end.
 
 ## Approach
 
@@ -15,19 +27,19 @@ I planned the front end and back end structure of the project before starting to
 
 The main elements I wanted functional for an MVP were:
 
-- User registration and log in
-- Editing account and picking heroes
-- Creating a team
-- Joining a team
-- Displaying a nice page for each team
-- Scalability for different devices
+- User registration and log in.
+- Editing account and picking heroes.
+- Creating a team.
+- Joining a team.
+- Displaying a nice page for each team.
+- Scalability for different devices.
 
 I wanted the design to be clean and great to use. I did a mock up considering device scaling from the beginning:
-<img src='ScreenCaps\Whiteboard-1.png)
-<img src='ScreenCaps\Whiteboard-2.png)
+<img src='ScreenCaps\Whiteboard-1.png'>
+<img src='ScreenCaps\Whiteboard-2.png'>
 
-The backend was designed to be function and easy to use:
-<img src='ScreenCaps\Backend.png)
+The backend was designed to be functional and easy to use:
+<img src='ScreenCaps\Backend.png'>
 
 ### Planning
 
@@ -195,16 +207,18 @@ After this I add page routes with React Router Dom and added the other pages of 
 <img src='ScreenCaps\Team-Page.png'>
 <img src='ScreenCaps\Teams-Page.png'>
 
-## Challenges
+## What I learnt
 
-### Overall
+I found the main two things I learnt from making this site was project time management and planning was very important and significantly improved what I could get done in my time frame. Also I picked up Chakra-UI as a helpful skill which I will be sure to use in future projects.
+
+### Challenges
 
 Most of the challenges involved with making this site was extra features after the MVP. I would say that the end vision of what I would like to do with it in the future is a lot more complex than what I could complete on my own in the time frame, not that it was a small amount. I would like to revisit and rebuild this site in the future and give myself more time with it.
 
 ### Bugs
 
-Deployment of this project came up with some errors on the back end at first. The problem i was having was that I was forgetting a .env file which doesn't get uploaded to github since it is ignored. At one point I had reset the folder and forgotten to add back the .env file.
+Deployment of this project came up with some errors on the back end at first. The problem I was having was that I was forgetting a .env file which doesn't get uploaded to GitHub since it is ignored. At one point I had reset the folder and forgotten to add back the .env file.
 
-## What I learnt
+##
 
-I found the main two things I learnt from making this site was project time management and planning was very important and significantly improved what I could get done in my time frame. Also I picked up Chakra-UI as a helpful skill which I will be sure to use in future projects.
+One of the biggest wins was thoroughly planning enough that I barely had to edit my back end after the initial version of it. Also more in general the App functions very well and feels good to use. Showing it to my friends they quickly made accounts and started using the app without me having to explain how any of it worked.
