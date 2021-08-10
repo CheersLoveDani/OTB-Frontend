@@ -12,7 +12,7 @@ https://github.com/sirdantheawesome/OTB-Frontend <-- Frontend
 
 https://github.com/sirdantheawesome/OTB-Backend <-- Backend
 
-## The Brief
+### The Brief
 
 - Make a website using Django-React full stack.
 - Work in small groups of up to three or solo.
@@ -207,7 +207,9 @@ After this I add page routes with React Router Dom and added the other pages of 
 <img src='ScreenCaps\Team-Page.png'>
 <img src='ScreenCaps\Teams-Page.png'>
 
-## What I learnt
+## Final Thoughts
+
+### What I learnt
 
 I found the main two things I learnt from making this site was project time management and planning was very important and significantly improved what I could get done in my time frame. Also I picked up Chakra-UI as a helpful skill which I will be sure to use in future projects.
 
@@ -219,6 +221,6 @@ Most of the challenges involved with making this site was extra features after t
 
 Deployment of this project came up with some errors on the back end at first. The problem I was having was that I was forgetting a .env file which doesn't get uploaded to GitHub since it is ignored. At one point I had reset the folder and forgotten to add back the .env file.
 
-##
+### Wins
 
 One of the biggest wins was thoroughly planning enough that I barely had to edit my back end after the initial version of it. Also more in general the App functions very well and feels good to use. Showing it to my friends they quickly made accounts and started using the app without me having to explain how any of it worked.
